@@ -1,259 +1,218 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const MobileSavingsCalculator = () => {
-  const [productCost, setProductCost] = useState('');
-  const [sellingPrice, setSellingPrice] = useState('');
-  const [quantity, setQuantity] = useState('');
-  const [results, setResults] = useState(null);
+const skuData = [
+  { variant: "icon", ptr: 86.5, schemeSellIn: 16.5 },
+  { variant: "clove", ptr: 130.0, schemeSellIn: 22.0 },
+  { variant: "connect", ptr: 275.0, schemeSellIn: 25.0 },
+  { variant: "verve", ptr: 174.0, schemeSellIn: 14.0 },
+  { variant: "balanced taste(milds)", ptr: 313.0, schemeSellIn: 6.0 },
+  { variant: "ice burst", ptr: 313.0, schemeSellIn: 6.0 },
+  { variant: "double burst", ptr: 313.0, schemeSellIn: 20.0 },
+  { variant: "gfk social 2 pod", ptr: 275.0, schemeSellIn: 75.0 },
+  { variant: "gfk social red line", ptr: 275.0, schemeSellIn: 75.0 },
+  { variant: "gfk mixpod", ptr: 156.5, schemeSellIn: 10.0 },
+  { variant: "gfk twinpod", ptr: 156.5, schemeSellIn: 16.5 },
+  { variant: "gf indie mint kings", ptr: 156.5, schemeSellIn: 16.5 },
+  { variant: "gf smart 2.0", ptr: 88.0, schemeSellIn: 18.0 },
+  { variant: "ac clove mint (garam)", ptr: 110.0, schemeSellIn: 10.0 },
+  { variant: "ac fresh mint", ptr: 109.0, schemeSellIn: 15.0 },
+  { variant: "ac smash", ptr: 108.0, schemeSellIn: 14.0 },
+  { variant: "navycut", ptr: 86.5, schemeSellIn: 8.5 },
+];
 
-  const calculateSavings = () => {
-    const cost = parseFloat(productCost) || 0;
-    const price = parseFloat(sellingPrice) || 0;
-    const qty = parseInt(quantity) || 1;
+const emptyPackKamaiValues = {
+  icon: 10,
+  "gf indie mint kings": 10,
+  navycut: 5,
+};
 
-    if (cost <= 0 || price <= 0) {
-      alert('Please enter valid product cost and selling price');
-      return;
-    }
+function toTitleCase(str) {
+  return str
+    .toLowerCase()
+    .split(/(\s|-|\()/)
+    .map((word) => {
+      if (word.trim() === "" || /(\s|-|\()/.test(word)) return word;
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join("");
+}
 
-    const profit = price - cost;
-    const profitMargin = ((profit / price) * 100).toFixed(2);
-    const totalProfit = profit * qty;
-    const totalRevenue = price * qty;
-    const totalCost = cost * qty;
+export default function MobileSavingsCalculator() {
+  const [quantities, setQuantities] = useState({});
 
-    setResults({
-      profit: profit.toFixed(2),
-      profitMargin,
-      totalProfit: totalProfit.toFixed(2),
-      totalRevenue: totalRevenue.toFixed(2),
-      totalCost: totalCost.toFixed(2),
-      quantity: qty
-    });
+  const packOptions = Array.from({ length: 101 }, (_, i) => i);
+
+  const handleQuantityChange = (variant, value) => {
+    const qty = parseInt(value, 10);
+    setQuantities((prev) => ({ ...prev, [variant]: isNaN(qty) ? 0 : qty }));
   };
 
-  const resetForm = () => {
-    setProductCost('');
-    setSellingPrice('');
-    setQuantity('');
-    setResults(null);
+  // TOTALS
+  const totalKamai = skuData.reduce((sum, sku) => {
+    const qty = quantities[sku.variant] || 0;
+    const schemeKamai = qty * sku.schemeSellIn;
+    const emptyPackKamaiPerUnit = emptyPackKamaiValues[sku.variant] || 0;
+    const emptyKamai = qty * emptyPackKamaiPerUnit; // purchase = empty pack
+    return sum + schemeKamai + emptyKamai;
+  }, 0);
+
+  const styles = {
+    container: {
+      backgroundColor: "#001f4d",
+      color: "white",
+      padding: 8,
+      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      maxWidth: 480,
+      margin: "auto",
+      fontSize: 11,
+      overflowX: "auto",
+    },
+    table: {
+      width: "100%",
+      borderCollapse: "collapse",
+      minWidth: 420,
+      border: "1px solid white",
+    },
+    th: {
+      padding: "6px 4px",
+      border: "1px solid white",
+      fontWeight: "bold",
+      fontSize: 10,
+      textAlign: "center",
+      whiteSpace: "normal", // allow wrapping
+      wordWrap: "break-word",
+      lineHeight: 1.2,
+    },
+    variantTd: {
+      border: "1px solid white",
+      textAlign: "left",
+      fontSize: 10,
+      padding: "6px 8px",
+      whiteSpace: "normal", // ✅ allow wrapping
+      wordWrap: "break-word", // ✅ break long words
+      width: 90, // ✅ slimmer column
+    },
+    td: {
+      border: "1px solid white",
+      textAlign: "center",
+      fontSize: 10,
+      padding: "6px 4px",
+      whiteSpace: "nowrap",
+    },
+    select: {
+      width: 40,
+      fontSize: 10,
+      padding: 1,
+      borderRadius: 4,
+      border: "none",
+      textAlign: "center",
+      backgroundColor: "white",
+      color: "black",
+    },
+    headerText: {
+      textAlign: "left",
+      marginBottom: 10,
+      fontWeight: "bold",
+      fontSize: 20,
+      color: "#ffe082",
+    },
+    totalKamaiDisplay: {
+      fontWeight: "bold",
+      fontSize: 18,
+      marginTop: 14,
+      color: "#ffe082",
+      textAlign: "left",
+    },
+  };
+
+  const columnWidths = {
+    variant: 90,
+    ptr: 45,
+    scheme: 65,
+    emptyPackScheme: 80,
+    purchased: 55,
+    totalKamai: 90,
   };
 
   return (
-    <div className="calculator-container" style={{
-      maxWidth: '400px',
-      margin: '0 auto',
-      padding: '20px',
-      fontFamily: 'Arial, sans-serif',
-      backgroundColor: '#f5f5f5',
-      borderRadius: '10px',
-      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
-    }}>
-      <h1 style={{
-        textAlign: 'center',
-        color: '#333',
-        marginBottom: '30px',
-        fontSize: '24px'
-      }}>Retailer Savings Calculator</h1>
-      
-      <div className="input-group" style={{ marginBottom: '20px' }}>
-        <label style={{
-          display: 'block',
-          marginBottom: '5px',
-          fontWeight: 'bold',
-          color: '#555'
-        }}>Product Cost ($):</label>
-        <input
-          type="number"
-          value={productCost}
-          onChange={(e) => setProductCost(e.target.value)}
-          placeholder="Enter product cost"
-          style={{
-            width: '100%',
-            padding: '12px',
-            border: '1px solid #ddd',
-            borderRadius: '5px',
-            fontSize: '16px',
-            boxSizing: 'border-box'
-          }}
-        />
-      </div>
+    <div style={styles.container}>
+      <h2 style={styles.headerText}>Retailer Savings Calculator</h2>
+      <table style={styles.table}>
+        <thead>
+          <tr>
+            <th style={{ ...styles.th, width: columnWidths.variant }}>
+              Variant
+            </th>
+            <th style={{ ...styles.th, width: columnWidths.ptr }}>PTR</th>
+            <th style={{ ...styles.th, width: columnWidths.scheme }}>Scheme</th>
+            <th style={{ ...styles.th, width: columnWidths.emptyPackScheme }}>
+              Empty Pack Scheme
+            </th>
+            <th style={{ ...styles.th, width: columnWidths.purchased }}>
+              Purchased
+            </th>
+            <th style={{ ...styles.th, width: columnWidths.totalKamai }}>
+              Total Kamai
+              <br />
+              (Savings)
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {skuData.map((sku) => {
+            const qty = quantities[sku.variant] || 0;
+            const schemeKamai = qty * sku.schemeSellIn;
+            const emptyPackKamaiPerUnit =
+              emptyPackKamaiValues[sku.variant] || 0;
+            const emptyKamai = qty * emptyPackKamaiPerUnit;
+            const total = schemeKamai + emptyKamai;
 
-      <div className="input-group" style={{ marginBottom: '20px' }}>
-        <label style={{
-          display: 'block',
-          marginBottom: '5px',
-          fontWeight: 'bold',
-          color: '#555'
-        }}>Selling Price ($):</label>
-        <input
-          type="number"
-          value={sellingPrice}
-          onChange={(e) => setSellingPrice(e.target.value)}
-          placeholder="Enter selling price"
-          style={{
-            width: '100%',
-            padding: '12px',
-            border: '1px solid #ddd',
-            borderRadius: '5px',
-            fontSize: '16px',
-            boxSizing: 'border-box'
-          }}
-        />
+            return (
+              <tr key={sku.variant}>
+                <td style={styles.variantTd}>{toTitleCase(sku.variant)}</td>
+                <td style={{ ...styles.td, width: columnWidths.ptr }}>
+                  {sku.ptr.toFixed(1)}
+                </td>
+                <td style={{ ...styles.td, width: columnWidths.scheme }}>
+                  {sku.schemeSellIn.toFixed(1)}
+                </td>
+                <td
+                  style={{ ...styles.td, width: columnWidths.emptyPackScheme }}
+                >
+                  {emptyPackKamaiPerUnit > 0 ? emptyPackKamaiPerUnit : ""}
+                </td>
+                <td style={{ ...styles.td, width: columnWidths.purchased }}>
+                  <select
+                    value={qty}
+                    onChange={(e) =>
+                      handleQuantityChange(sku.variant, e.target.value)
+                    }
+                    style={styles.select}
+                  >
+                    {packOptions.map((num) => (
+                      <option key={num} value={num}>
+                        {num}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td style={{ ...styles.td, width: columnWidths.totalKamai }}>
+                  {total.toFixed(1)}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      <div style={styles.totalKamaiDisplay}>
+        TOTAL Kamai (Savings): {totalKamai.toFixed(1)}
       </div>
-
-      <div className="input-group" style={{ marginBottom: '20px' }}>
-        <label style={{
-          display: 'block',
-          marginBottom: '5px',
-          fontWeight: 'bold',
-          color: '#555'
-        }}>Quantity:</label>
-        <input
-          type="number"
-          value={quantity}
-          onChange={(e) => setQuantity(e.target.value)}
-          placeholder="Enter quantity (default: 1)"
-          style={{
-            width: '100%',
-            padding: '12px',
-            border: '1px solid #ddd',
-            borderRadius: '5px',
-            fontSize: '16px',
-            boxSizing: 'border-box'
-          }}
-        />
+      <div style={styles.totalKamaiDisplay}>
+        Total Weekly Kamai (Savings): {(totalKamai * 6).toFixed(1)}
       </div>
-
-      <div className="button-group" style={{
-        display: 'flex',
-        gap: '10px',
-        marginBottom: '30px'
-      }}>
-        <button
-          onClick={calculateSavings}
-          style={{
-            flex: 1,
-            padding: '12px',
-            backgroundColor: '#007bff',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            fontSize: '16px',
-            cursor: 'pointer',
-            fontWeight: 'bold'
-          }}
-        >
-          Calculate
-        </button>
-        <button
-          onClick={resetForm}
-          style={{
-            flex: 1,
-            padding: '12px',
-            backgroundColor: '#6c757d',
-            color: 'white',
-            border: 'none',
-            borderRadius: '5px',
-            fontSize: '16px',
-            cursor: 'pointer',
-            fontWeight: 'bold'
-          }}
-        >
-          Reset
-        </button>
-      </div>
-
-      {results && (
-        <div className="results" style={{
-          backgroundColor: 'white',
-          padding: '20px',
-          borderRadius: '8px',
-          boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-        }}>
-          <h2 style={{
-            color: '#28a745',
-            marginBottom: '15px',
-            fontSize: '20px',
-            textAlign: 'center'
-          }}>Calculation Results</h2>
-          
-          <div className="result-item" style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '10px',
-            paddingBottom: '8px',
-            borderBottom: '1px solid #eee'
-          }}>
-            <span style={{ fontWeight: 'bold', color: '#555' }}>Profit per unit:</span>
-            <span style={{ color: '#28a745', fontWeight: 'bold' }}>${results.profit}</span>
-          </div>
-          
-          <div className="result-item" style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '10px',
-            paddingBottom: '8px',
-            borderBottom: '1px solid #eee'
-          }}>
-            <span style={{ fontWeight: 'bold', color: '#555' }}>Profit Margin:</span>
-            <span style={{ color: '#28a745', fontWeight: 'bold' }}>{results.profitMargin}%</span>
-          </div>
-          
-          <div className="result-item" style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '10px',
-            paddingBottom: '8px',
-            borderBottom: '1px solid #eee'
-          }}>
-            <span style={{ fontWeight: 'bold', color: '#555' }}>Total Cost:</span>
-            <span style={{ color: '#dc3545', fontWeight: 'bold' }}>${results.totalCost}</span>
-          </div>
-          
-          <div className="result-item" style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '10px',
-            paddingBottom: '8px',
-            borderBottom: '1px solid #eee'
-          }}>
-            <span style={{ fontWeight: 'bold', color: '#555' }}>Total Revenue:</span>
-            <span style={{ color: '#17a2b8', fontWeight: 'bold' }}>${results.totalRevenue}</span>
-          </div>
-          
-          <div className="result-item" style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginBottom: '10px',
-            paddingBottom: '8px',
-            borderBottom: '2px solid #28a745'
-          }}>
-            <span style={{ fontWeight: 'bold', color: '#555' }}>Total Profit:</span>
-            <span style={{ color: '#28a745', fontWeight: 'bold', fontSize: '18px' }}>${results.totalProfit}</span>
-          </div>
-          
-          <div className="result-item" style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            marginTop: '10px'
-          }}>
-            <span style={{ fontWeight: 'bold', color: '#555' }}>Quantity:</span>
-            <span style={{ fontWeight: 'bold' }}>{results.quantity} units</span>
-          </div>
-        </div>
-      )}
-      
-      <div style={{
-        textAlign: 'center',
-        marginTop: '20px',
-        fontSize: '12px',
-        color: '#666'
-      }}>
-        Mobile-optimized for retailers
+      <div style={styles.totalKamaiDisplay}>
+        Total Monthly Kamai (Savings): {(totalKamai * 26).toFixed(1)}
       </div>
     </div>
   );
-};
-
-export default MobileSavingsCalculator;
+}
