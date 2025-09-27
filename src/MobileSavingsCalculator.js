@@ -1,29 +1,39 @@
 import React, { useState } from "react";
 
 const skuData = [
-  { variant: "icon", ptr: 86.5, schemeSellIn: 16.5 },
-  { variant: "clove", ptr: 130.0, schemeSellIn: 22.0 },
-  { variant: "connect", ptr: 275.0, schemeSellIn: 25.0 },
-  { variant: "verve", ptr: 174.0, schemeSellIn: 14.0 },
-  { variant: "balanced taste(milds)", ptr: 313.0, schemeSellIn: 6.0 },
-  { variant: "ice burst", ptr: 313.0, schemeSellIn: 6.0 },
-  { variant: "double burst", ptr: 313.0, schemeSellIn: 20.0 },
-  { variant: "gfk social 2 pod", ptr: 275.0, schemeSellIn: 75.0 },
-  { variant: "gfk social red line", ptr: 275.0, schemeSellIn: 75.0 },
-  { variant: "gfk mixpod", ptr: 156.5, schemeSellIn: 10.0 },
-  { variant: "gfk twinpod", ptr: 156.5, schemeSellIn: 16.5 },
-  { variant: "gf indie mint kings", ptr: 156.5, schemeSellIn: 16.5 },
-  { variant: "gf smart 2.0", ptr: 88.0, schemeSellIn: 18.0 },
-  { variant: "ac clove mint (garam)", ptr: 110.0, schemeSellIn: 10.0 },
-  { variant: "ac fresh mint", ptr: 109.0, schemeSellIn: 15.0 },
-  { variant: "ac smash", ptr: 108.0, schemeSellIn: 14.0 },
-  { variant: "navycut", ptr: 86.5, schemeSellIn: 8.5 },
+  { variant: "B&H Gold Blue", ptr: 290.0, schemeSellIn: 23.0 },
+  { variant: "B&H Special", ptr: 290.0, schemeSellIn: 23.0 },
+  { variant: "ICON", ptr: 70.0, schemeSellIn: 16.5 },
+  { variant: "Clove", ptr: 108.0, schemeSellIn: 22.0 },
+  { variant: "Connect", ptr: 250.0, schemeSellIn: 25.0 },
+  { variant: "Verve", ptr: 160.0, schemeSellIn: 14.0 },
+  { variant: "CLASSIC RICH TASTE", ptr: 307.0, schemeSellIn: 6.0 },
+  { variant: "ICE BURST", ptr: 300.0, schemeSellIn: 13.0 },
+  { variant: "DOUBLE BURST", ptr: 300.0, schemeSellIn: 13.0 },
+  { variant: "GFK RED 20's", ptr: 303.0, schemeSellIn: 10.0 },
+  { variant: "GFK BLUE 20's", ptr: 303.0, schemeSellIn: 10.0 },
+  { variant: "GFK RED SLEEKS", ptr: 290.0, schemeSellIn: 23.0 },
+  { variant: "GFK BLUE SLEEKS", ptr: 290.0, schemeSellIn: 23.0 },
+  { variant: "GFK SOCIAL 2 POD", ptr: 225.0, schemeSellIn: 50.0 },
+  { variant: "GFK SOCIAL Red Line", ptr: 225.0, schemeSellIn: 50.0 },
+  { variant: "GFK Mixpod", ptr: 146.5, schemeSellIn: 10.0 },
+  { variant: "GFK Twinpod", ptr: 140.0, schemeSellIn: 16.5 },
+  { variant: "GF Indie Mint KINGS", ptr: 140.0, schemeSellIn: 16.5 },
+  { variant: "GF SMART 2.0", ptr: 75.0, schemeSellIn: 13.0 },
+  { variant: "AC Clove mint (Garam)", ptr: 100.0, schemeSellIn: 10.0 },
+  { variant: "AC Fresh Mint", ptr: 94.0, schemeSellIn: 15.0 },
+  { variant: "AC Smash", ptr: 94.0, schemeSellIn: 14.0 },
+  { variant: "NAVYCUT", ptr: 86.5, schemeSellIn: 8.5 },
 ];
 
 const emptyPackKamaiValues = {
-  icon: 10,
-  "gf indie mint kings": 10,
-  navycut: 5,
+  ICON: 10,
+  "GFK RED SLEEKS": 18,
+  "GFK BLUE SLEEKS": 18,
+  "GFK SOCIAL 2 POD": 18,
+  "GFK SOCIAL Red Line": 20,
+  "GF Indie Mint KINGS": 10,
+  NAVYCUT: 5,
 };
 
 function toTitleCase(str) {
@@ -52,7 +62,7 @@ export default function MobileSavingsCalculator() {
     const qty = quantities[sku.variant] || 0;
     const schemeKamai = qty * sku.schemeSellIn;
     const emptyPackKamaiPerUnit = emptyPackKamaiValues[sku.variant] || 0;
-    const emptyKamai = qty * emptyPackKamaiPerUnit; // purchase = empty pack
+    const emptyKamai = qty * emptyPackKamaiPerUnit;
     return sum + schemeKamai + emptyKamai;
   }, 0);
 
@@ -88,9 +98,9 @@ export default function MobileSavingsCalculator() {
       textAlign: "left",
       fontSize: 10,
       padding: "6px 8px",
-      whiteSpace: "normal", // ✅ allow wrapping
-      wordWrap: "break-word", // ✅ break long words
-      width: 90, // ✅ slimmer column
+      whiteSpace: "normal", // allow wrapping
+      wordWrap: "break-word", // break long words
+      width: 90,
     },
     td: {
       border: "1px solid white",
@@ -143,7 +153,7 @@ export default function MobileSavingsCalculator() {
             <th style={{ ...styles.th, width: columnWidths.variant }}>
               Variant
             </th>
-            <th style={{ ...styles.th, width: columnWidths.ptr }}>PTR</th>
+            <th style={{ ...styles.th, width: columnWidths.ptr }}>Net PTR</th>
             <th style={{ ...styles.th, width: columnWidths.scheme }}>Scheme</th>
             <th style={{ ...styles.th, width: columnWidths.emptyPackScheme }}>
               Empty Pack Scheme
