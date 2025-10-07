@@ -1,40 +1,146 @@
 import React, { useState } from "react";
 
 const skuData = [
-  { variant: "B&H Gold Blue", ptr: 290.0, schemeSellIn: 23.0 },
-  { variant: "B&H Special", ptr: 290.0, schemeSellIn: 23.0 },
-  { variant: "ICON", ptr: 70.0, schemeSellIn: 16.5 },
-  { variant: "Clove", ptr: 108.0, schemeSellIn: 22.0 },
-  { variant: "Connect", ptr: 250.0, schemeSellIn: 25.0 },
-  { variant: "Verve", ptr: 160.0, schemeSellIn: 14.0 },
-  { variant: "CLASSIC RICH TASTE", ptr: 307.0, schemeSellIn: 6.0 },
-  { variant: "ICE BURST", ptr: 300.0, schemeSellIn: 13.0 },
-  { variant: "DOUBLE BURST", ptr: 300.0, schemeSellIn: 13.0 },
-  { variant: "GFK RED 20's", ptr: 303.0, schemeSellIn: 10.0 },
-  { variant: "GFK BLUE 20's", ptr: 303.0, schemeSellIn: 10.0 },
-  { variant: "GFK RED SLEEKS", ptr: 290.0, schemeSellIn: 23.0 },
-  { variant: "GFK BLUE SLEEKS", ptr: 290.0, schemeSellIn: 23.0 },
-  { variant: "GFK SOCIAL 2 POD", ptr: 225.0, schemeSellIn: 50.0 },
-  { variant: "GFK SOCIAL Red Line", ptr: 225.0, schemeSellIn: 50.0 },
-  { variant: "GFK Mixpod", ptr: 146.5, schemeSellIn: 10.0 },
-  { variant: "GFK Twinpod", ptr: 140.0, schemeSellIn: 16.5 },
-  { variant: "GF Indie Mint KINGS", ptr: 140.0, schemeSellIn: 16.5 },
-  { variant: "GF SMART 2.0", ptr: 75.0, schemeSellIn: 13.0 },
-  { variant: "AC Clove mint (Garam)", ptr: 100.0, schemeSellIn: 10.0 },
-  { variant: "AC Fresh Mint", ptr: 94.0, schemeSellIn: 15.0 },
-  { variant: "AC Smash", ptr: 94.0, schemeSellIn: 14.0 },
-  { variant: "NAVYCUT", ptr: 86.5, schemeSellIn: 8.5 },
+  {
+    variant: "B&H Gold Blue",
+    netPtr: 290.0,
+    regularKamai: 27.0,
+    schemeKamai: 23.0,
+  },
+  {
+    variant: "B&H Special",
+    netPtr: 290.0,
+    regularKamai: 27.0,
+    schemeKamai: 23.0,
+  },
+  {
+    variant: "ICON",
+    netPtr: 70.0,
+    regularKamai: 8.5,
+    schemeKamai: 16.5,
+    emptyPack: 10,
+  },
+  {
+    variant: "Clove",
+    netPtr: 108.0,
+    regularKamai: 20.0,
+    schemeKamai: 22.0,
+    emptyPack: 10,
+  },
+  { variant: "Connect", netPtr: 250.0, regularKamai: 25.0, schemeKamai: 25.0 },
+  { variant: "Verve", netPtr: 160.0, regularKamai: 16.0, schemeKamai: 14.0 },
+  {
+    variant: "CLASSIC RICH TASTE",
+    netPtr: 307.0,
+    regularKamai: 27.0,
+    schemeKamai: 6.0,
+  },
+  {
+    variant: "ICE BURST",
+    netPtr: 300.0,
+    regularKamai: 27.0,
+    schemeKamai: 13.0,
+  },
+  {
+    variant: "DOUBLE BURST",
+    netPtr: 300.0,
+    regularKamai: 27.0,
+    schemeKamai: 13.0,
+  },
+  {
+    variant: "GFK RED 20's",
+    netPtr: 303.0,
+    regularKamai: 27.0,
+    schemeKamai: 10.0,
+  },
+  {
+    variant: "GFK BLUE 20's",
+    netPtr: 303.0,
+    regularKamai: 27.0,
+    schemeKamai: 10.0,
+  },
+  {
+    variant: "GFK RED SLEEKS",
+    netPtr: 290.0,
+    regularKamai: 27.0,
+    schemeKamai: 23.0,
+    emptyPack: 18,
+  },
+  {
+    variant: "GFK BLUE SLEEKS",
+    netPtr: 290.0,
+    regularKamai: 27.0,
+    schemeKamai: 23.0,
+    emptyPack: 18,
+  },
+  {
+    variant: "GFK SOCIAL 2 POD",
+    netPtr: 225.0,
+    regularKamai: 25.0,
+    schemeKamai: 50.0,
+    emptyPack: 20,
+  },
+  {
+    variant: "GFK SOCIAL RED LINE",
+    netPtr: 225.0,
+    regularKamai: 25.0,
+    schemeKamai: 50.0,
+    emptyPack: 20,
+  },
+  {
+    variant: "GFK Mixpod",
+    netPtr: 146.5,
+    regularKamai: 13.5,
+    schemeKamai: 10.0,
+  },
+  {
+    variant: "GFK Twinpod",
+    netPtr: 140.0,
+    regularKamai: 13.5,
+    schemeKamai: 16.5,
+  },
+  {
+    variant: "GF Indie Mint KINGS",
+    netPtr: 140.0,
+    regularKamai: 13.5,
+    schemeKamai: 16.5,
+    emptyPack: 10,
+  },
+  {
+    variant: "GF SMART 2.0",
+    netPtr: 75.0,
+    regularKamai: 7.0,
+    schemeKamai: 13.0,
+  },
+  {
+    variant: "GF SLK RED",
+    netPtr: 80.0,
+    regularKamai: 9.9,
+    schemeKamai: 10.1,
+    emptyPack: 10,
+  },
+  {
+    variant: "GF SLK BLUE",
+    netPtr: 80.0,
+    regularKamai: 9.9,
+    schemeKamai: 10.1,
+    emptyPack: 10,
+  },
+  {
+    variant: "AC Clove mint (Garam)",
+    netPtr: 100.0,
+    regularKamai: 10.0,
+    schemeKamai: 10.0,
+  },
+  {
+    variant: "AC Fresh Mint",
+    netPtr: 94.0,
+    regularKamai: 11.0,
+    schemeKamai: 15.0,
+  },
+  { variant: "AC Smash", netPtr: 94.0, regularKamai: 12.0, schemeKamai: 14.0 },
+  { variant: "NAVYCUT", netPtr: 86.5, regularKamai: 8.5, emptyPack: 5 },
 ];
-
-const emptyPackKamaiValues = {
-  ICON: 10,
-  "GFK RED SLEEKS": 18,
-  "GFK BLUE SLEEKS": 18,
-  "GFK SOCIAL 2 POD": 18,
-  "GFK SOCIAL Red Line": 20,
-  "GF Indie Mint KINGS": 10,
-  NAVYCUT: 5,
-};
 
 function toTitleCase(str) {
   return str
@@ -49,7 +155,6 @@ function toTitleCase(str) {
 
 export default function MobileSavingsCalculator() {
   const [quantities, setQuantities] = useState({});
-
   const packOptions = Array.from({ length: 101 }, (_, i) => i);
 
   const handleQuantityChange = (variant, value) => {
@@ -57,13 +162,12 @@ export default function MobileSavingsCalculator() {
     setQuantities((prev) => ({ ...prev, [variant]: isNaN(qty) ? 0 : qty }));
   };
 
-  // TOTALS
   const totalKamai = skuData.reduce((sum, sku) => {
     const qty = quantities[sku.variant] || 0;
-    const schemeKamai = qty * sku.schemeSellIn;
-    const emptyPackKamaiPerUnit = emptyPackKamaiValues[sku.variant] || 0;
-    const emptyKamai = qty * emptyPackKamaiPerUnit;
-    return sum + schemeKamai + emptyKamai;
+    const regularKamai = qty * (sku.regularKamai || 0);
+    const schemeKamai = qty * (sku.schemeKamai || 0);
+    const emptyKamai = qty * (sku.emptyPack || 0);
+    return sum + regularKamai + schemeKamai + emptyKamai;
   }, 0);
 
   const styles = {
@@ -89,7 +193,7 @@ export default function MobileSavingsCalculator() {
       fontWeight: "bold",
       fontSize: 10,
       textAlign: "center",
-      whiteSpace: "normal", // allow wrapping
+      whiteSpace: "normal",
       wordWrap: "break-word",
       lineHeight: 1.2,
     },
@@ -98,8 +202,8 @@ export default function MobileSavingsCalculator() {
       textAlign: "left",
       fontSize: 10,
       padding: "6px 8px",
-      whiteSpace: "normal", // allow wrapping
-      wordWrap: "break-word", // break long words
+      whiteSpace: "normal",
+      wordWrap: "break-word",
       width: 90,
     },
     td: {
@@ -137,7 +241,8 @@ export default function MobileSavingsCalculator() {
 
   const columnWidths = {
     variant: 90,
-    ptr: 45,
+    netPtr: 65,
+    regularKamai: 65,
     scheme: 65,
     emptyPackScheme: 80,
     purchased: 55,
@@ -153,8 +258,15 @@ export default function MobileSavingsCalculator() {
             <th style={{ ...styles.th, width: columnWidths.variant }}>
               Variant
             </th>
-            <th style={{ ...styles.th, width: columnWidths.ptr }}>Net PTR</th>
-            <th style={{ ...styles.th, width: columnWidths.scheme }}>Scheme</th>
+            <th style={{ ...styles.th, width: columnWidths.netPtr }}>
+              Net PTR
+            </th>
+            <th style={{ ...styles.th, width: columnWidths.regularKamai }}>
+              Regular Kamai
+            </th>
+            <th style={{ ...styles.th, width: columnWidths.scheme }}>
+              Scheme Kamai
+            </th>
             <th style={{ ...styles.th, width: columnWidths.emptyPackScheme }}>
               Empty Pack Scheme
             </th>
@@ -171,25 +283,27 @@ export default function MobileSavingsCalculator() {
         <tbody>
           {skuData.map((sku) => {
             const qty = quantities[sku.variant] || 0;
-            const schemeKamai = qty * sku.schemeSellIn;
-            const emptyPackKamaiPerUnit =
-              emptyPackKamaiValues[sku.variant] || 0;
-            const emptyKamai = qty * emptyPackKamaiPerUnit;
-            const total = schemeKamai + emptyKamai;
+            const regularKamai = qty * (sku.regularKamai || 0);
+            const schemeKamai = qty * (sku.schemeKamai || 0);
+            const emptyKamai = qty * (sku.emptyPack || 0);
+            const total = regularKamai + schemeKamai + emptyKamai;
 
             return (
               <tr key={sku.variant}>
                 <td style={styles.variantTd}>{toTitleCase(sku.variant)}</td>
-                <td style={{ ...styles.td, width: columnWidths.ptr }}>
-                  {sku.ptr.toFixed(1)}
+                <td style={{ ...styles.td, width: columnWidths.netPtr }}>
+                  {sku.netPtr != null ? sku.netPtr.toFixed(1) : ""}
+                </td>
+                <td style={{ ...styles.td, width: columnWidths.regularKamai }}>
+                  {sku.regularKamai ? sku.regularKamai.toFixed(1) : ""}
                 </td>
                 <td style={{ ...styles.td, width: columnWidths.scheme }}>
-                  {sku.schemeSellIn.toFixed(1)}
+                  {sku.schemeKamai ? sku.schemeKamai.toFixed(1) : ""}
                 </td>
                 <td
                   style={{ ...styles.td, width: columnWidths.emptyPackScheme }}
                 >
-                  {emptyPackKamaiPerUnit > 0 ? emptyPackKamaiPerUnit : ""}
+                  {sku.emptyPack ? sku.emptyPack : ""}
                 </td>
                 <td style={{ ...styles.td, width: columnWidths.purchased }}>
                   <select
