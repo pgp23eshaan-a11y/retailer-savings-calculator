@@ -2,144 +2,195 @@ import React, { useState } from "react";
 
 const skuData = [
   {
-    variant: "B&H Gold Blue",
-    netPtr: 290.0,
-    regularKamai: 27.0,
-    schemeKamai: 23.0,
+    variant: "B&H Gold Blue (Lights)",
+    mrp: 340,
+    ptr: 313,
+    regularKamai: 27,
+    schemeKamai: 23,
+    emptyPack: 0,
+    netPtr: 290,
   },
   {
     variant: "B&H Special",
-    netPtr: 290.0,
-    regularKamai: 27.0,
-    schemeKamai: 23.0,
+    mrp: 340,
+    ptr: 313,
+    regularKamai: 27,
+    schemeKamai: 23,
+    emptyPack: 0,
+    netPtr: 290,
   },
   {
     variant: "ICON",
-    netPtr: 70.0,
+    mrp: 95,
+    ptr: 86.5,
     regularKamai: 8.5,
     schemeKamai: 16.5,
-    emptyPack: 10,
+    emptyPack: 0,
+    netPtr: 70,
   },
   {
     variant: "Clove",
-    netPtr: 108.0,
-    regularKamai: 20.0,
-    schemeKamai: 22.0,
-    emptyPack: 10,
+    mrp: 150,
+    ptr: 130,
+    regularKamai: 20,
+    schemeKamai: 22,
+    emptyPack: 8,
+    netPtr: 108,
   },
-  { variant: "Connect", netPtr: 250.0, regularKamai: 25.0, schemeKamai: 25.0 },
-  { variant: "Verve", netPtr: 160.0, regularKamai: 16.0, schemeKamai: 14.0 },
   {
-    variant: "CLASSIC RICH TASTE",
-    netPtr: 307.0,
-    regularKamai: 27.0,
-    schemeKamai: 6.0,
+    variant: "Connect",
+    mrp: 300,
+    ptr: 275,
+    regularKamai: 25,
+    schemeKamai: 25,
+    emptyPack: 0,
+    netPtr: 250,
   },
   {
     variant: "ICE BURST",
-    netPtr: 300.0,
-    regularKamai: 27.0,
-    schemeKamai: 13.0,
+    mrp: 340,
+    ptr: 313,
+    regularKamai: 27,
+    schemeKamai: 13,
+    emptyPack: 0,
+    netPtr: 300,
   },
   {
     variant: "DOUBLE BURST",
-    netPtr: 300.0,
-    regularKamai: 27.0,
-    schemeKamai: 13.0,
+    mrp: 340,
+    ptr: 313,
+    regularKamai: 27,
+    schemeKamai: 13,
+    emptyPack: 0,
+    netPtr: 300,
   },
   {
-    variant: "GFK RED 20's",
-    netPtr: 303.0,
-    regularKamai: 27.0,
-    schemeKamai: 10.0,
-  },
-  {
-    variant: "GFK BLUE 20's",
-    netPtr: 303.0,
-    regularKamai: 27.0,
-    schemeKamai: 10.0,
-  },
-  {
-    variant: "GFK RED SLEEKS",
-    netPtr: 290.0,
-    regularKamai: 27.0,
-    schemeKamai: 23.0,
-    emptyPack: 18,
-  },
-  {
-    variant: "GFK BLUE SLEEKS",
-    netPtr: 290.0,
-    regularKamai: 27.0,
-    schemeKamai: 23.0,
-    emptyPack: 18,
+    variant: "Rich Taste (Regular)",
+    mrp: 340,
+    ptr: 313,
+    regularKamai: 27,
+    schemeKamai: 6,
+    emptyPack: 0,
+    netPtr: 307,
   },
   {
     variant: "GFK SOCIAL 2 POD",
-    netPtr: 225.0,
-    regularKamai: 25.0,
-    schemeKamai: 50.0,
+    mrp: 300,
+    ptr: 275,
+    regularKamai: 25,
+    schemeKamai: 50,
     emptyPack: 20,
+    netPtr: 225,
   },
   {
-    variant: "GFK SOCIAL RED LINE",
-    netPtr: 225.0,
-    regularKamai: 25.0,
-    schemeKamai: 50.0,
+    variant: "GFK SOCIAL Red Line",
+    mrp: 300,
+    ptr: 275,
+    regularKamai: 25,
+    schemeKamai: 50,
     emptyPack: 20,
+    netPtr: 225,
+  },
+  {
+    variant: "GFK Blue 20",
+    mrp: 340,
+    ptr: 313,
+    regularKamai: 27,
+    schemeKamai: 10,
+    emptyPack: 0,
+    netPtr: 275,
+  },
+  {
+    variant: "GFK Red 20",
+    mrp: 340,
+    ptr: 313,
+    regularKamai: 27,
+    schemeKamai: 10,
+    emptyPack: 0,
+    netPtr: 275,
+  },
+  {
+    variant: "GFK RED SLEEKS",
+    mrp: 340,
+    ptr: 313,
+    regularKamai: 27,
+    schemeKamai: 23,
+    emptyPack: 18,
+    netPtr: 290,
+  },
+  {
+    variant: "GFK BLUE SLEEKS",
+    mrp: 340,
+    ptr: 313,
+    regularKamai: 27,
+    schemeKamai: 23,
+    emptyPack: 18,
+    netPtr: 290,
   },
   {
     variant: "GFK Mixpod",
-    netPtr: 146.5,
+    mrp: 170,
+    ptr: 156.5,
     regularKamai: 13.5,
-    schemeKamai: 10.0,
+    schemeKamai: 10,
+    emptyPack: 0,
+    netPtr: 146.5,
   },
   {
     variant: "GFK Twinpod",
-    netPtr: 140.0,
+    mrp: 170,
+    ptr: 156.5,
     regularKamai: 13.5,
     schemeKamai: 16.5,
+    emptyPack: 0,
+    netPtr: 140,
   },
+
   {
-    variant: "GF Indie Mint KINGS",
-    netPtr: 140.0,
-    regularKamai: 13.5,
-    schemeKamai: 16.5,
-    emptyPack: 10,
-  },
-  {
-    variant: "GF SMART 2.0",
-    netPtr: 75.0,
-    regularKamai: 7.0,
-    schemeKamai: 13.0,
-  },
-  {
-    variant: "GF SLK RED",
-    netPtr: 80.0,
+    variant: "GF SLK Red & Blue",
+    mrp: 100,
+    ptr: 90.1,
     regularKamai: 9.9,
     schemeKamai: 10.1,
     emptyPack: 10,
-  },
-  {
-    variant: "GF SLK BLUE",
-    netPtr: 80.0,
-    regularKamai: 9.9,
-    schemeKamai: 10.1,
-    emptyPack: 10,
+    netPtr: 80,
   },
   {
     variant: "AC Clove mint (Garam)",
-    netPtr: 100.0,
-    regularKamai: 10.0,
-    schemeKamai: 10.0,
+    mrp: 120,
+    ptr: 110,
+    regularKamai: 10,
+    schemeKamai: 10,
+    emptyPack: 0,
+    netPtr: 100,
   },
   {
     variant: "AC Fresh Mint",
-    netPtr: 94.0,
-    regularKamai: 11.0,
-    schemeKamai: 15.0,
+    mrp: 120,
+    ptr: 109,
+    regularKamai: 11,
+    schemeKamai: 15,
+    emptyPack: 0,
+    netPtr: 94,
   },
-  { variant: "AC Smash", netPtr: 94.0, regularKamai: 12.0, schemeKamai: 14.0 },
-  { variant: "NAVYCUT", netPtr: 86.5, regularKamai: 8.5, emptyPack: 5 },
+  {
+    variant: "AC Smash",
+    mrp: 120,
+    ptr: 108,
+    regularKamai: 12,
+    schemeKamai: 14,
+    emptyPack: 0,
+    netPtr: 94,
+  },
+  {
+    variant: "NAVYCUT",
+    mrp: 95,
+    ptr: 86.5,
+    regularKamai: 8.5,
+    schemeKamai: 0,
+    emptyPack: 5,
+    netPtr: 86.5,
+  },
 ];
 
 function toTitleCase(str) {
@@ -241,6 +292,7 @@ export default function MobileSavingsCalculator() {
 
   const columnWidths = {
     variant: 90,
+    mrp: 50,
     netPtr: 65,
     regularKamai: 65,
     scheme: 65,
@@ -258,6 +310,7 @@ export default function MobileSavingsCalculator() {
             <th style={{ ...styles.th, width: columnWidths.variant }}>
               Variant
             </th>
+            <th style={{ ...styles.th, width: columnWidths.mrp }}>MRP</th>
             <th style={{ ...styles.th, width: columnWidths.netPtr }}>
               Net PTR
             </th>
@@ -291,8 +344,11 @@ export default function MobileSavingsCalculator() {
             return (
               <tr key={sku.variant}>
                 <td style={styles.variantTd}>{toTitleCase(sku.variant)}</td>
+                <td style={{ ...styles.td, width: columnWidths.mrp }}>
+                  {sku.mrp ? sku.mrp.toFixed(1) : ""}
+                </td>
                 <td style={{ ...styles.td, width: columnWidths.netPtr }}>
-                  {sku.netPtr != null ? sku.netPtr.toFixed(1) : ""}
+                  {sku.netPtr ? sku.netPtr.toFixed(1) : ""}
                 </td>
                 <td style={{ ...styles.td, width: columnWidths.regularKamai }}>
                   {sku.regularKamai ? sku.regularKamai.toFixed(1) : ""}
@@ -303,7 +359,7 @@ export default function MobileSavingsCalculator() {
                 <td
                   style={{ ...styles.td, width: columnWidths.emptyPackScheme }}
                 >
-                  {sku.emptyPack ? sku.emptyPack : ""}
+                  {sku.emptyPack || ""}
                 </td>
                 <td style={{ ...styles.td, width: columnWidths.purchased }}>
                   <select
