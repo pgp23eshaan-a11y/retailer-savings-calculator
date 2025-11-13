@@ -92,21 +92,21 @@ const skuData = [
     netPtr: 225,
   },
   {
-    variant: "GFK Blue 20",
+    variant: "GFK Blue — 20HL",
     mrp: 340,
     ptr: 313,
     regularKamai: 27,
     schemeKamai: 10,
-    emptyPack: 0,
+    emptyPack: 10,
     netPtr: 275,
   },
   {
-    variant: "GFK Red 20",
+    variant: "GFK Red — 20HL",
     mrp: 340,
     ptr: 313,
     regularKamai: 27,
     schemeKamai: 10,
-    emptyPack: 0,
+    emptyPack: 10,
     netPtr: 275,
   },
   {
@@ -114,7 +114,7 @@ const skuData = [
     mrp: 340,
     ptr: 313,
     regularKamai: 27,
-    schemeKamai: 23,
+    schemeKamai: 13,
     emptyPack: 18,
     netPtr: 290,
   },
@@ -123,7 +123,7 @@ const skuData = [
     mrp: 340,
     ptr: 313,
     regularKamai: 27,
-    schemeKamai: 23,
+    schemeKamai: 13,
     emptyPack: 18,
     netPtr: 290,
   },
@@ -145,7 +145,15 @@ const skuData = [
     emptyPack: 0,
     netPtr: 140,
   },
-
+  {
+    variant: "GF SMART 2.0",
+    mrp: 95,
+    ptr: 88,
+    regularKamai: 7,
+    schemeKamai: 13,
+    emptyPack: 0,
+    netPtr: 75,
+  },
   {
     variant: "GF SLK Red & Blue",
     mrp: 100,
@@ -205,7 +213,13 @@ function toTitleCase(str) {
 }
 
 export default function MobileSavingsCalculator() {
-  const [quantities, setQuantities] = useState({});
+  // Initialize drop-down default quantities to 1
+  const initialQuantities = skuData.reduce(
+    (acc, sku) => ({ ...acc, [sku.variant]: 1 }),
+    {}
+  );
+  const [quantities, setQuantities] = useState(initialQuantities);
+
   const packOptions = Array.from({ length: 101 }, (_, i) => i);
 
   const handleQuantityChange = (variant, value) => {
@@ -290,6 +304,20 @@ export default function MobileSavingsCalculator() {
     },
   };
 
+  // Colors for highlighted rows and text colors
+  const rowColors = {
+    Icon: { backgroundColor: "orange", color: "white" },
+    Clove: { backgroundColor: "orange", color: "white" },
+    "GFK SOCIAL 2 POD": { backgroundColor: "yellow", color: "black" },
+    "GFK SOCIAL Red Line": { backgroundColor: "yellow", color: "black" },
+    "GFK Blue — 20HL": { backgroundColor: "yellow", color: "black" },
+    "GFK Red — 20HL": { backgroundColor: "yellow", color: "black" },
+    "GFK RED SLEEKS": { backgroundColor: "blue", color: "white" },
+    "GFK BLUE SLEEKS": { backgroundColor: "blue", color: "white" },
+  };
+
+  const getRowStyle = (variant) => rowColors[variant] || {};
+
   const columnWidths = {
     variant: 90,
     mrp: 50,
@@ -335,29 +363,65 @@ export default function MobileSavingsCalculator() {
         </thead>
         <tbody>
           {skuData.map((sku) => {
-            const qty = quantities[sku.variant] || 0;
+            const qty = quantities[sku.variant] ?? 1;
             const regularKamai = qty * (sku.regularKamai || 0);
             const schemeKamai = qty * (sku.schemeKamai || 0);
             const emptyKamai = qty * (sku.emptyPack || 0);
             const total = regularKamai + schemeKamai + emptyKamai;
+            const rowStyle = getRowStyle(sku.variant);
 
             return (
-              <tr key={sku.variant}>
-                <td style={styles.variantTd}>{toTitleCase(sku.variant)}</td>
-                <td style={{ ...styles.td, width: columnWidths.mrp }}>
-                  {sku.mrp ? sku.mrp.toFixed(1) : ""}
-                </td>
-                <td style={{ ...styles.td, width: columnWidths.netPtr }}>
-                  {sku.netPtr ? sku.netPtr.toFixed(1) : ""}
-                </td>
-                <td style={{ ...styles.td, width: columnWidths.regularKamai }}>
-                  {sku.regularKamai ? sku.regularKamai.toFixed(1) : ""}
-                </td>
-                <td style={{ ...styles.td, width: columnWidths.scheme }}>
-                  {sku.schemeKamai ? sku.schemeKamai.toFixed(1) : ""}
+              <tr key={sku.variant} style={rowStyle}>
+                <td
+                  style={{
+                    ...styles.variantTd,
+                    color: rowStyle.color || "inherit",
+                  }}
+                >
+                  {toTitleCase(sku.variant)}
                 </td>
                 <td
-                  style={{ ...styles.td, width: columnWidths.emptyPackScheme }}
+                  style={{
+                    ...styles.td,
+                    width: columnWidths.mrp,
+                    color: rowStyle.color || "inherit",
+                  }}
+                >
+                  {sku.mrp?.toFixed(1)}
+                </td>
+                <td
+                  style={{
+                    ...styles.td,
+                    width: columnWidths.netPtr,
+                    color: rowStyle.color || "inherit",
+                  }}
+                >
+                  {sku.netPtr?.toFixed(1)}
+                </td>
+                <td
+                  style={{
+                    ...styles.td,
+                    width: columnWidths.regularKamai,
+                    color: rowStyle.color || "inherit",
+                  }}
+                >
+                  {sku.regularKamai?.toFixed(1)}
+                </td>
+                <td
+                  style={{
+                    ...styles.td,
+                    width: columnWidths.scheme,
+                    color: rowStyle.color || "inherit",
+                  }}
+                >
+                  {sku.schemeKamai?.toFixed(1)}
+                </td>
+                <td
+                  style={{
+                    ...styles.td,
+                    width: columnWidths.emptyPackScheme,
+                    color: rowStyle.color || "inherit",
+                  }}
                 >
                   {sku.emptyPack || ""}
                 </td>
@@ -376,7 +440,13 @@ export default function MobileSavingsCalculator() {
                     ))}
                   </select>
                 </td>
-                <td style={{ ...styles.td, width: columnWidths.totalKamai }}>
+                <td
+                  style={{
+                    ...styles.td,
+                    width: columnWidths.totalKamai,
+                    color: rowStyle.color || "inherit",
+                  }}
+                >
                   {total.toFixed(1)}
                 </td>
               </tr>
