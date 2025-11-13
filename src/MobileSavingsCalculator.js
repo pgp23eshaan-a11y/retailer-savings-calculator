@@ -314,6 +314,7 @@ export default function MobileSavingsCalculator() {
     "GFK Red — 20HL": { backgroundColor: "yellow", color: "black" },
     "GFK RED SLEEKS": { backgroundColor: "blue", color: "white" },
     "GFK BLUE SLEEKS": { backgroundColor: "blue", color: "white" },
+    "GF SLK Red & Blue": { backgroundColor: "blue", color: "white" },
   };
 
   const getRowStyle = (variant) => rowColors[variant] || {};
